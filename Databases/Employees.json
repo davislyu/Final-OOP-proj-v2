@@ -1,0 +1,60 @@
+{
+  "employees": [
+    {
+      "employee_id": 5574,
+      "name": "Bob",
+      "phone": "0545566769",
+      "email": "Bob@gmail.com",
+      "role": "manager"
+    },
+    {
+      "employee_id": 9909,
+      "name": "Lili",
+      "phone": "0545773320",
+      "email": "Lili@gmail.com",
+      "role": "hostess"
+    },
+    {
+      "employee_id": 1151,
+      "name": "davis",
+      "phone": "0565443321",
+      "email": "dvis@gmail.com",
+      "role": "waiter"
+    },
+    {
+      "employee_id": 9090,
+      "name": "stav",
+      "phone": "0545773320",
+      "email": "Dima@gmail.com",
+      "role": "waiter"
+    },
+    {
+      "employee_id": 9008,
+      "name": "chen",
+      "phone": "0568978869",
+      "email": "riv@gmail.com",
+      "role": "meneger"
+    },
+    {
+      "employee_id": 2232,
+      "name": "mira",
+      "phone": "0589706954",
+      "email": "morv@gmail.com",
+      "role": "meneger"
+    },
+    {
+      "employee_id": 0,
+      "name": "davis",
+      "phone": "0585200018",
+      "email": "davis@gmail.com",
+      "role": "waiter"
+    },
+    {
+      "employee_id": 1010,
+      "name": "davie",
+      "phone": "0545773320",
+      "email": "davisl@gmail.com",
+      "role": "waiter"
+    }
+  ]
+}
