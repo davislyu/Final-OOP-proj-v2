@@ -17,7 +17,7 @@ class Menu:
     
     def add_dish(self, dish):
         self.menu_dict['menu_items'].append(dish.__dict__)
-        Data_Menu.save_to_menu(self.menu_dict)  # Save menu data
+        Data_Menu.save_to_menu(self.menu_dict)  
     
     def edit_dish(self, dish_name, new_dish):
         for i, dish in enumerate(self.menu_dict['menu_items']):
