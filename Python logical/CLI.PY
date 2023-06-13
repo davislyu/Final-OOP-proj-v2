@@ -1,8 +1,8 @@
 from Dish import *
 from Employee import *
-from Hostess import *
+
 from Ingredient import *
-from Manager import *
+
 from Menu import *
 from Order_history import *
 from Order import *
@@ -127,6 +127,11 @@ def handle_edit_dish(menu):
     Prompts the user to enter the name of the dish they want to edit, and allows them to modify
     the name, price, and ingredients of the dish if it exists in the menu.
     """
+
+    print("Dish names in the menu:")
+    for dish in menu.menu_dict['menu_items']:
+        print(dish['name'])
+
     dish_name = input("Enter the name of the dish you want to edit: ")
 
     for dish in menu.menu_dict['menu_items']:
@@ -162,7 +167,7 @@ def handle_edit_dish(menu):
                 else:
                     print("Input cannot be blank. Please enter a valid ingredient name and amount.")
 
-            Data_Menu.save_to_menu(menu.menu_dict)  # Save menu data using the method from Data_layer.py
+            Data_Menu.save_to_menu(menu.menu_dict)  
             print(f"{dish_name} was updated in the menu.")
             break
     else:
@@ -176,29 +181,30 @@ def handle_edit_order_history(order_history):
     """
     Handles the editing of an order in the order history.
     Prints the order history, prompts the user to enter the order ID they want to edit,
-    and allows them to choose what aspect of the order to edit (customer name, total price, or table number).
+    and allows them to choose what aspect of the order to edit (customer name, total price, table number, or delete order).
     """
     order_history.print_order_history()
     
+
     while True:
         order_id = input("Enter the order ID that you want to edit: ")
         if not order_id.strip():
             print("Input cannot be blank. Please try again.")
             continue
-        
+
         try:
             order_id = int(order_id)
             break
         except ValueError:
             print("Invalid input type. Please enter an integer.")
-    
+
     while True:
         try:
-            choice = int(input("What do you want to edit? (1=Customer Name, 2=Total Price, 3=Table Number): "))
+            choice = int(input("What do you want to edit? (1=Customer Name, 2=Total Price, 3=Table Number, 4=Delete Order): "))
             break
         except ValueError:
             print("Invalid input type. Please enter an integer.")
-    
+
     if choice == 1:
         new_value = input("Enter the new customer name: ")
         order_history.edit_order_history(order_id, choice, new_value)
@@ -218,6 +224,12 @@ def handle_edit_order_history(order_history):
             except ValueError:
                 print("Invalid input type. Please enter an integer.")
         order_history.edit_order_history(order_id, choice, new_value)
+    elif choice == 4:
+        confirm = input("Are you sure you want to delete this order? (yes/no): ")
+        if confirm.lower() == "yes":
+            order_history.delete_order(order_id)
+        else:
+            print("Deletion canceled.")
     else:
         print("Invalid choice.")
         return
@@ -370,6 +382,37 @@ def handle_delete_order(order_history):
 
 
 
+def handle_reserve_table():
+    """
+    Handles the reservation or release of a table.
+    Displays the available tables and prompts the user to choose an option.
+    """
+    tables_data = Data_Table.get_tables()
+    print("Tables available for reservation:")
+    for table in tables_data['tables']:
+        print(Table(table['table_number'], table['status']))
+
+    while True:
+        table_number = input("Enter the table number you want to reserve or release (or 'cancel' to go back): ")
+        if table_number == 'cancel':
+            return
+
+        try:
+            table_number = int(table_number)
+            break
+        except ValueError:
+            print("Invalid input type. Please enter an integer.")
+
+    action = input("Do you want to reserve or release the table? (reserve/release): ")
+
+    if action.lower() == 'reserve':
+        Table.reserve_table(table_number)
+    elif action.lower() == 'release':
+        Table.release_table(table_number)
+    else:
+        print("Invalid action. Please choose either 'reserve' or 'release'.")
+
+
 def print_menu():
     print("Please select an operation:")
     print("1. Add Employee")
@@ -382,11 +425,12 @@ def print_menu():
     print("8. Edit dish")
     print("9. View order history")
     print("10. Edit Order history")
-    print("11. Reserve Table")
+    print("11. Reserve/Release Table")
     print("12. Take an order")
     print("13. remove dish")
     print("14. edit employee")
     print("15. Delete order")
+
     
 
 def main():
@@ -439,6 +483,7 @@ def main():
             handle_edit_employee()
         elif choice == 15:
             handle_delete_order(order_history)
+
 
         repeat_action = input("Do you want to perform another action? (yes/no): ")
 

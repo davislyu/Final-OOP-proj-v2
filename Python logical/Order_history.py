@@ -27,30 +27,23 @@ class OrderHistory:
                 order_to_edit['total_price'] = new_value
             elif choice == 3:
                 order_to_edit['table_number'] = new_value
-                print("The change was made successfully")
             else:
                 print("Invalid choice.")
                 return
             Data_OrderHistory.save_order_history(order_history)
+            print("The change was made successfully.")
         else:
             print(f"No order found with ID {order_id}.")
-            return
 
                 
-    @staticmethod
-    def delete_order(order_id):
+    def delete_order(self, order_id):
         order_history = Data_OrderHistory.get_order_history()
-        orders = order_history["orders"]
-
-        updated_orders = [
-            order for order in orders if order['order_id'] != order_id]
-
-        if len(updated_orders) == len(orders):
-            print(f"No order found with ID {order_id}.")
-            return
-
-        order_history["orders"] = updated_orders
-        Data_OrderHistory.save_order_history(order_history)
-
-        print(f"Order {order_id} has been deleted from the order history.")
+        orders = order_history['orders']
+        for order in orders:
+            if str(order['order_id']) == str(order_id):
+                orders.remove(order)
+                Data_OrderHistory.save_order_history(order_history)
+                print("Order deleted successfully.")
+                return
+        print(f"No order found with ID {order_id}.")
         

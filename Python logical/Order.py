@@ -41,15 +41,35 @@ class Order:
                 item = next(
                     (x for x in menu_items if x["name"] == item_name), None)
                 if item:
+                    # Check ingredient availability
+                    stock = Data_Stock.get_ingredients()
+                    insufficient_ingredients = False
+                    for ingredient in item["ingredients"]:
+                        stock_ingredient = next(
+                            (x for x in stock["ingredients"] if x["name"] == ingredient["name"]), None)
+                        if stock_ingredient:
+                            if stock_ingredient["amount"] < ingredient["amount"] * item_amount:
+                                insufficient_ingredients = True
+                                break
+                        else:
+                            insufficient_ingredients = True
+                            break
+
+                    if insufficient_ingredients:
+                        print(f"Not enough ingredients to prepare  {item_amount} {item_name}'s. Please choose another dish.")
+                        continue
+
                     self.items.append(
                         {"name": item_name, "amount": item_amount})
                     self.total_price += item["price"] * item_amount
-                    stock = Data_Stock.get_ingredients()
+
+                    # Reduce ingredient stock
                     for ingredient in item["ingredients"]:
                         stock_ingredient = next(
                             (x for x in stock["ingredients"] if x["name"] == ingredient["name"]), None)
                         if stock_ingredient:
                             stock_ingredient["amount"] -= ingredient["amount"] * item_amount
+
                     Data_Stock.save_ingredients(stock)
                 else:
                     print(f"{item_name} is not in the menu.")
@@ -58,8 +78,7 @@ class Order:
         order_history["orders"].append(self.__dict__)
         Data_OrderHistory.save_order_history(order_history)
         print("Order created successfully!")
-        print("Order saved to order history")
-
+    print("Order saved to order history")
     
     @staticmethod
     def view_orders():

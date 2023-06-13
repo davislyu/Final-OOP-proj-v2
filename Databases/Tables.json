@@ -18,11 +18,11 @@
     },
     {
       "table_number": 5,
-      "status": "reserved"
+      "status": "free for reservation"
     },
     {
       "table_number": 6,
-      "status": "reserved"
+      "status": "free for reservation"
     },
     {
       "table_number": 7,
